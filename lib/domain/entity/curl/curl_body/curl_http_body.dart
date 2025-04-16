@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:postmanovich/domain/entity/curl/curl_body/curl_body.dart';
+import 'package:postmanovich/domain/entity/json/json_text_formatter/json_text_formatter.dart';
 
 abstract class CurlHttpBody extends CurlBody {
   const CurlHttpBody();
@@ -13,20 +14,24 @@ class CurlHttpBodyMap extends CurlHttpBody {
 
   @override
   String toView() {
-    final StringBuffer buffer = StringBuffer();
+    const JsonTextFormatter formatter = JsonTextFormatterDefault();
 
-    buffer.write("{");
+    return formatter.prettyJson(data);
 
-    for (var i = 0; i < data.length; i++) {
-      final entry = data.entries.elementAt(i);
+    // final StringBuffer buffer = StringBuffer();
 
-      buffer.write(
-          '"${entry.key}": ${entry.value}${i != data.length - 1 ? ',' : ''}');
-    }
+    // buffer.write("{");
 
-    buffer.write("}");
+    // for (var i = 0; i < data.length; i++) {
+    //   final entry = data.entries.elementAt(i);
 
-    return buffer.toString();
+    //   buffer.write(
+    //       '"${entry.key}": ${entry.value}${i != data.length - 1 ? ',' : ''}');
+    // }
+
+    // buffer.write("}");
+
+    // return buffer.toString();
   }
 
   @override

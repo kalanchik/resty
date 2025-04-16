@@ -1,7 +1,7 @@
 import 'package:postmanovich/config/constants/globals.dart';
 import 'package:postmanovich/domain/entity/request_method/request_method.dart';
 
-abstract class HttpMethod implements RequestMethod {
+abstract class HttpMethod extends RequestMethod {
   const HttpMethod();
 
   factory HttpMethod.fromString(String value) {
@@ -23,9 +23,6 @@ class HttpMethodGet extends HttpMethod {
 
   @override
   List<Object?> get props => ["GET"];
-
-  @override
-  bool? get stringify => true;
 }
 
 class HttpMethodPost extends HttpMethod {
@@ -38,7 +35,4 @@ class HttpMethodPost extends HttpMethod {
 
   @override
   List<Object?> get props => ["POST"];
-
-  @override
-  bool? get stringify => true;
 }

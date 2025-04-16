@@ -42,13 +42,13 @@ class _TestScreenState extends State<TestScreen> {
               onCurlInsert: (context) =>
                   ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text("onCurlInsert"),
+                  content: Text("Парсим curl..."),
                 ),
               ),
               onCurlCreated: (arg, context) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("onCurlCreated: ${arg.toString()}"),
+                    content: Text("curl вставлен"),
                   ),
                 );
 
@@ -57,6 +57,10 @@ class _TestScreenState extends State<TestScreen> {
                 }
               },
             ),
+            const SizedBox(
+              height: 8,
+            ),
+            Row(),
             const SizedBox(
               height: 8,
             ),
