@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 class JsonSyntaxParser {
   static const TextStyle baseStyle = TextStyle(
-    fontFamily: 'RobotoMono',
+    fontFamily: 'RobotoMono', // Должен быть моноширинный!
     fontSize: 14,
-    height: 1.5,
+    height: 1.5, // Уберите height или установите одинаковое значение
+    letterSpacing: 0.0,
     color: Colors.white,
   );
 

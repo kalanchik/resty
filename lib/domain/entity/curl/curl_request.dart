@@ -17,6 +17,8 @@ abstract class Curl extends Equatable {
 
   CurlBody? get body;
 
+  RequestMethod get method;
+
   String toCurl();
 
   factory Curl.fromString(String curl) => _parseCurlV2(curl);
@@ -33,7 +35,7 @@ abstract class Curl extends Equatable {
 class CurlHttpRequest extends Curl {
   const CurlHttpRequest({
     required String url,
-    required RequestMethod method,
+    required HttpMethod method,
     required Map<String, String> headers,
     required dynamic body,
     required Map<String, String>? queryParameters,
@@ -44,7 +46,7 @@ class CurlHttpRequest extends Curl {
         _queryParameters = queryParameters;
 
   final String _url;
-  final RequestMethod _method;
+  final HttpMethod _method;
   final Map<String, String> _headers;
   final CurlBody? _body;
   final Map<String, String>? _queryParameters;
@@ -99,4 +101,7 @@ class CurlHttpRequest extends Curl {
 
   @override
   CurlBody? get body => _body;
+
+  @override
+  HttpMethod get method => _method;
 }

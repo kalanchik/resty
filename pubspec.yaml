@@ -48,6 +48,9 @@ dependencies:
 
   # State Manager
   flutter_bloc: ^9.0.0
+  
+  # Network
+  dio: ^5.8.0+1
 
 
 dev_dependencies:

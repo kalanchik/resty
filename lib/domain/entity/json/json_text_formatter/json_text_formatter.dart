@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 
@@ -8,6 +9,8 @@ abstract class JsonTextFormatter extends Equatable {
   String? format(String input);
 
   String prettyJson(dynamic data);
+
+  Map<String, dynamic>? toJson(String input);
 }
 
 class JsonTextFormatterDefault implements JsonTextFormatter {
@@ -35,4 +38,14 @@ class JsonTextFormatterDefault implements JsonTextFormatter {
 
   @override
   bool? get stringify => null;
+
+  @override
+  Map<String, dynamic>? toJson(String input) {
+    try {
+      return jsonDecode(input) as Map<String, dynamic>;
+    } catch (e) {
+      log("JSON PARSE ERROR: ${e.toString()}");
+      return null;
+    }
+  }
 }

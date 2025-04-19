@@ -7,7 +7,12 @@ sealed class UrlInputState extends Equatable {
 }
 
 final class UrlInputInitial extends UrlInputState {
-  const UrlInputInitial({required super.input});
+  const UrlInputInitial({
+    required super.input,
+    required this.url,
+  });
+
+  final Uri? url;
 
   @override
   List<Object?> get props => [super.input];

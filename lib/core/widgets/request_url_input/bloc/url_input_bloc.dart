@@ -8,7 +8,7 @@ part 'url_input_event.dart';
 part 'url_input_state.dart';
 
 class UrlInputBloc extends Bloc<UrlInputEvent, UrlInputState> {
-  UrlInputBloc(this.input) : super(UrlInputInitial(input: input)) {
+  UrlInputBloc(this.input) : super(UrlInputInitial(input: input, url: null)) {
     on<ChangeUrlInputEvent>(_changed);
     on<CurlInsertUrlInputEvent>(_curlParsing);
   }
@@ -24,7 +24,16 @@ class UrlInputBloc extends Bloc<UrlInputEvent, UrlInputState> {
       return;
     }
 
-    emit(UrlInputInitial(input: input));
+    Uri? url;
+
+    try {
+      url = Uri.parse(event.value);
+
+      emit(UrlInputInitial(input: input, url: url));
+      return;
+    } catch (_) {
+      emit(UrlInputInitial(input: input, url: null));
+    }
   }
 
   Future<void> _curlParsing(

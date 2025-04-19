@@ -14,11 +14,13 @@ class RequestUrlInput extends StatefulWidget {
     required this.controller,
     this.onCurlInsert,
     this.onCurlCreated,
+    required this.onUrlChanged,
   });
 
   final double width;
   final double height;
   final TextEditingController controller;
+  final ValueChanged<Uri?> onUrlChanged;
   final ContextCallBack? onCurlInsert;
   final ContextCallBackWithArg<Curl>? onCurlCreated;
 
@@ -48,6 +50,7 @@ class _RequestUrlInputState extends State<RequestUrlInput> {
       controller: widget.controller,
       onCurlInsert: widget.onCurlInsert,
       onCurlCreated: widget.onCurlCreated,
+      onUrlChanged: widget.onUrlChanged,
       child: SizedBox(
         width: widget.width,
         height: widget.height,
@@ -75,10 +78,12 @@ class _CurlListener extends StatelessWidget {
     this.onCurlInsert,
     this.onCurlCreated,
     required this.child,
+    required this.onUrlChanged,
   });
 
   final ContextCallBack? onCurlInsert;
   final ContextCallBackWithArg<Curl>? onCurlCreated;
+  final ValueChanged<Uri?> onUrlChanged;
   final UrlInputBloc bloc;
   final TextEditingController controller;
   final Widget child;
@@ -88,6 +93,11 @@ class _CurlListener extends StatelessWidget {
     return BlocListener<UrlInputBloc, UrlInputState>(
       bloc: bloc,
       listener: (context, state) {
+        if (state is UrlInputInitial) {
+          onUrlChanged(state.url);
+          return;
+        }
+
         if (state is UrlInputCurlParsing) {
           if (onCurlInsert != null) {
             onCurlInsert!(context);

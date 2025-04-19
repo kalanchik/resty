@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/core/widgets/json_text_area/text_editing_controller/json_text_editing_controller.dart';
-import 'package:postmanovich/core/widgets/json_text_area/view/json_text_area.dart';
 import 'package:postmanovich/core/widgets/request_url_input/view/request_url_input.dart';
+import 'package:postmanovich/domain/entity/curl/curl_request.dart';
+import 'package:postmanovich/domain/use_case/request_use_case/request_use_case.dart';
+import 'package:postmanovich/features/test/bloc/request_bloc.dart';
+import 'package:postmanovich/features/test/widget/method_dropdown.dart';
+import 'package:postmanovich/features/test/widget/request_info_content/request_info_content.dart';
+import 'package:postmanovich/features/test/widget/request_info_tab_bar.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -10,68 +16,129 @@ class TestScreen extends StatefulWidget {
   State<TestScreen> createState() => _TestScreenState();
 }
 
-class _TestScreenState extends State<TestScreen> {
+class _TestScreenState extends State<TestScreen>
+    with SingleTickerProviderStateMixin {
   late final TextEditingController _urlInputCtrl;
   late final JsonTextEditingController _controller;
+  late final TabController _tabController;
+  late final ValueNotifier<int> _tabIndex;
 
   @override
   void initState() {
     _urlInputCtrl = TextEditingController();
     _controller = JsonTextEditingController();
+    _tabController = TabController(
+      length: 3,
+      vsync: this,
+      initialIndex: 2,
+    );
+    _tabIndex = ValueNotifier(2);
     super.initState();
   }
 
   @override
   void dispose() {
+    _tabController.dispose();
     _urlInputCtrl.dispose();
+    _tabIndex.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RequestUrlInput(
-              width: double.infinity,
-              height: 45,
-              controller: _urlInputCtrl,
-              onCurlInsert: (context) =>
-                  ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Парсим curl..."),
-                ),
-              ),
-              onCurlCreated: (arg, context) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("curl вставлен"),
+    return BlocProvider(
+      create: (context) => RequestBloc(
+        context.read<RequestUseCase>(),
+      ),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      MethodDropdown(
+                        bloc: context.read<RequestBloc>(),
+                      ),
+                      Expanded(
+                        child: RequestUrlInput(
+                          width: double.infinity,
+                          height: 45,
+                          controller: _urlInputCtrl,
+                          onCurlInsert: _onCurlInsert,
+                          onCurlCreated: _onCurlCreated,
+                          onUrlChanged: _onUrlChanged,
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(),
+                        onPressed: () {
+                          context.read<RequestBloc>().add(StartRequestEvent());
+                        },
+                        child: Text("SEND"),
+                      ),
+                    ],
                   ),
-                );
-
-                if (arg.body != null) {
-                  _controller.text = arg.body!.toView();
-                }
-              },
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(),
-            const SizedBox(
-              height: 8,
-            ),
-            Expanded(
-              child: JsonEditor(
-                controller: _controller,
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  RequestInfoTabBar(
+                    controller: _tabController,
+                    onPageChanged: (value) => _tabIndex.value = value,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  RequestInfoContent(
+                    jsonCtrl: _controller,
+                    tabNotifier: _tabIndex,
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
+  }
+
+  void _onCurlInsert(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Парсим curl..."),
+      ),
+    );
+  }
+
+  void _onCurlCreated(Curl arg, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("curl вставлен"),
+      ),
+    );
+
+    if (arg is CurlHttpRequest) {
+      context.read<RequestBloc>().add(
+            ChangeMethodRequestEvent(method: arg.method),
+          );
+    }
+
+    context.read<RequestBloc>().add(
+          ChangeUrlRequestEvent(Uri.tryParse(arg.url)),
+        );
+
+    if (arg.body != null) {
+      _controller.text = arg.body!.toView();
+    }
+  }
+
+  void _onUrlChanged(Uri? value) {
+    context.read<RequestBloc>().add(
+          ChangeUrlRequestEvent(value),
+        );
   }
 }
