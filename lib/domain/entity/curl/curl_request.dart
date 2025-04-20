@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:postmanovich/domain/entity/curl/curl_body/curl_body.dart';
-import 'package:postmanovich/domain/entity/curl/curl_body/curl_http_body.dart';
 import 'package:postmanovich/domain/entity/curl/curl_body_factory.dart';
 import 'package:postmanovich/domain/entity/request_method/http_method.dart';
 import 'package:postmanovich/domain/entity/request_method/request_method.dart';
@@ -53,6 +52,8 @@ class CurlHttpRequest extends Curl {
 
   @override
   String get url => _url;
+
+  Map<String, String> get headers => _headers;
 
   @override
   List<Object?> get props => [_url, _method, _headers, _body, _queryParameters];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:postmanovich/core/widgets/json_text_area/text_editing_controller/json_text_editing_controller.dart';
 
 class JsonEditor extends StatefulWidget {
@@ -16,29 +17,42 @@ class JsonEditor extends StatefulWidget {
 }
 
 class _JsonEditorState extends State<JsonEditor> {
-  final ScrollController _verticalScrollController = ScrollController();
-  final ScrollController _horizontalScrollController = ScrollController();
+  late final ScrollController _verticalScrollController;
+  late final ScrollController _numbersScrollController;
+  late final ScrollController _textScrollController;
 
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(() {
-      setState(() {});
-    });
-    widget.controller.json.addListener(
-      () => widget.onJsonChanged(widget.controller.json.value),
-    );
-    // Синхронизация скролла между номером строк и содержимым
+    _verticalScrollController = ScrollController();
+    _numbersScrollController = ScrollController();
+    _textScrollController = ScrollController();
+
+    widget.controller.addListener(_ctrlListener);
+    widget.controller.json.addListener(_jsonListener);
+
     _verticalScrollController.addListener(() {
-      _horizontalScrollController.jumpTo(_verticalScrollController.offset);
+      _numbersScrollController.jumpTo(_verticalScrollController.offset);
+      _textScrollController.jumpTo(_verticalScrollController.offset);
     });
   }
 
   @override
   void dispose() {
     _verticalScrollController.dispose();
-    _horizontalScrollController.dispose();
+    _numbersScrollController.dispose();
+    _textScrollController.dispose();
+    widget.controller.removeListener(_ctrlListener);
+    widget.controller.json.removeListener(_jsonListener);
     super.dispose();
+  }
+
+  void _ctrlListener() {
+    setState(() {});
+  }
+
+  void _jsonListener() {
+    widget.onJsonChanged(widget.controller.json.value);
   }
 
   @override
@@ -76,6 +90,7 @@ class _JsonEditorState extends State<JsonEditor> {
                   width: 40,
                   padding: const EdgeInsets.only(right: 8),
                   child: SingleChildScrollView(
+                    controller: _numbersScrollController,
                     physics: const NeverScrollableScrollPhysics(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -89,9 +104,11 @@ class _JsonEditorState extends State<JsonEditor> {
                       // Подсветка
                       Positioned.fill(
                         child: SingleChildScrollView(
+                          controller: _textScrollController,
                           child: RichText(
-                            text: widget.controller.parser
-                                .highlight(widget.controller.text),
+                            text: widget.controller.parser.highlight(
+                              widget.controller.text,
+                            ),
                           ),
                         ),
                       ),
@@ -101,8 +118,8 @@ class _JsonEditorState extends State<JsonEditor> {
                         controller: widget.controller,
                         maxLines: null,
                         expands: true,
-                        style: const TextStyle(
-                          fontFamily: 'RobotoMono',
+                        scrollController: _verticalScrollController,
+                        style: GoogleFonts.firaCode(
                           fontSize: 14,
                           color: Colors.transparent,
                           height: 1.5,
@@ -134,9 +151,8 @@ class _JsonEditorState extends State<JsonEditor> {
       lineCount,
       (index) => Text(
         '${index + 1}',
-        style: const TextStyle(
+        style: GoogleFonts.firaCode(
           color: Colors.grey,
-          fontFamily: 'RobotoMono',
           fontSize: 14,
           height: 1.5,
         ),

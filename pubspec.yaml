@@ -32,13 +32,15 @@ dependencies:
     sdk: flutter
 
   # Localization 
-
   flutter_localizations:
     sdk: flutter
   intl: any
 
   # Utils
   equatable: ^2.0.7
+  talker_flutter: ^4.7.2
+  talker_bloc_logger: ^4.7.2
+  talker_dio_logger: ^4.7.2
 
   # UI
   cupertino_icons: ^1.0.8
@@ -51,6 +53,9 @@ dependencies:
   
   # Network
   dio: ^5.8.0+1
+
+  # Assets
+  google_fonts: ^6.2.1
 
 
 dev_dependencies:

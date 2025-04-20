@@ -5,5 +5,6 @@ abstract class RequestUseCase {
     required Uri uri,
     required Map<String, dynamic>? data,
     required HttpMethod method,
+    required List<MapEntry<String, String>> headers,
   });
 }

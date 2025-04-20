@@ -6,8 +6,8 @@ abstract class HttpMethod extends RequestMethod {
 
   factory HttpMethod.fromString(String value) {
     return switch (value) {
-      Globals.httpMethodGet => HttpMethodGet(),
-      Globals.httpMethodPost => HttpMethodPost(),
+      Globals.httpMethodGet => const HttpMethodGet(),
+      Globals.httpMethodPost => const HttpMethodPost(),
       _ => throw Exception("Unknown http method: $value"),
     };
   }

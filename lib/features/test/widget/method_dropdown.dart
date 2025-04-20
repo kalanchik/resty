@@ -22,14 +22,14 @@ class MethodDropdown extends StatelessWidget {
         return SizedBox(
           width: 150,
           child: DropdownButton<HttpMethod>(
-            items: [
+            items: const [
               DropdownMenuItem(
                 value: HttpMethodGet(),
-                child: const Text("GET"),
+                child: Text("GET"),
               ),
               DropdownMenuItem(
                 value: HttpMethodPost(),
-                child: const Text("POST"),
+                child: Text("POST"),
               ),
             ],
             selectedItemBuilder: (context) => const [

@@ -4,8 +4,6 @@ import 'package:postmanovich/core/root/app_root.dart';
 
 void main() {
   runApp(
-    CoreDi(
-      child: const AppRoot(),
-    ),
+    const CoreDi(child: AppRoot()),
   );
 }

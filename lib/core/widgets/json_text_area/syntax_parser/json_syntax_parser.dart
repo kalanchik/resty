@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class JsonSyntaxParser {
-  static const TextStyle baseStyle = TextStyle(
-    fontFamily: 'RobotoMono', // Должен быть моноширинный!
+  static TextStyle baseStyle = GoogleFonts.firaCode(
     fontSize: 14,
     height: 1.5, // Уберите height или установите одинаковое значение
     letterSpacing: 0.0,
@@ -26,7 +26,7 @@ class JsonSyntaxParser {
 
       TextStyle style = baseStyle;
       if (match.namedGroup('key') != null) {
-        style = style.copyWith(color: Colors.blue, fontWeight: FontWeight.bold);
+        style = style.copyWith(color: Colors.blue);
       } else if (match.namedGroup('string') != null) {
         style = style.copyWith(color: Colors.green);
       } else if (match.namedGroup('number') != null) {

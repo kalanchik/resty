@@ -16,11 +16,16 @@ class RequestUseCaseImpl implements RequestUseCase {
     required Uri uri,
     required Map<String, dynamic>? data,
     required HttpMethod method,
+    required List<MapEntry<String, String>> headers,
   }) async {
+    final headersMap = <String, String>{};
+
+    headersMap.addEntries(headers);
+
     final params = HttpRequestParams(
       uri: uri,
       body: data != null ? HttpRequestBodyMap(data) : null,
-      headers: null,
+      headers: headersMap,
       method: method,
     );
 

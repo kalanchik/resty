@@ -8,6 +8,8 @@ import 'package:postmanovich/features/test/bloc/request_bloc.dart';
 import 'package:postmanovich/features/test/widget/method_dropdown.dart';
 import 'package:postmanovich/features/test/widget/request_info_content/request_info_content.dart';
 import 'package:postmanovich/features/test/widget/request_info_tab_bar.dart';
+import 'package:postmanovich/features/test/widget/request_listener.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key});
@@ -41,6 +43,7 @@ class _TestScreenState extends State<TestScreen>
     _tabController.dispose();
     _urlInputCtrl.dispose();
     _tabIndex.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -49,59 +52,68 @@ class _TestScreenState extends State<TestScreen>
     return BlocProvider(
       create: (context) => RequestBloc(
         context.read<RequestUseCase>(),
+        context.read<Talker>(),
       ),
-      child: Builder(
-        builder: (context) {
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      MethodDropdown(
-                        bloc: context.read<RequestBloc>(),
-                      ),
-                      Expanded(
-                        child: RequestUrlInput(
-                          width: double.infinity,
-                          height: 45,
-                          controller: _urlInputCtrl,
-                          onCurlInsert: _onCurlInsert,
-                          onCurlCreated: _onCurlCreated,
-                          onUrlChanged: _onUrlChanged,
+      child: RequestListener(
+        onUrlChanged: (value) => _urlInputCtrl.text = value,
+        child: Builder(
+          builder: (context) {
+            return Scaffold(
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        MethodDropdown(
+                          bloc: context.read<RequestBloc>(),
                         ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(),
-                        onPressed: () {
-                          context.read<RequestBloc>().add(StartRequestEvent());
-                        },
-                        child: Text("SEND"),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  RequestInfoTabBar(
-                    controller: _tabController,
-                    onPageChanged: (value) => _tabIndex.value = value,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  RequestInfoContent(
-                    jsonCtrl: _controller,
-                    tabNotifier: _tabIndex,
-                  ),
-                ],
+                        Expanded(
+                          child: RequestUrlInput(
+                            width: double.infinity,
+                            height: 45,
+                            controller: _urlInputCtrl,
+                            onCurlInsert: _onCurlInsert,
+                            onCurlCreated: (arg, _) => _onCurlCreated(
+                              arg,
+                              context,
+                            ),
+                            onUrlChanged: (url) => _onUrlChanged(context, url),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(),
+                          onPressed: () {
+                            context
+                                .read<RequestBloc>()
+                                .add(StartRequestEvent());
+                          },
+                          child: const Text("SEND"),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    RequestInfoTabBar(
+                      controller: _tabController,
+                      onPageChanged: (value) => _tabIndex.value = value,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    RequestInfoContent(
+                      jsonCtrl: _controller,
+                      tabNotifier: _tabIndex,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -116,7 +128,7 @@ class _TestScreenState extends State<TestScreen>
 
   void _onCurlCreated(Curl arg, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text("curl вставлен"),
       ),
     );
@@ -125,6 +137,8 @@ class _TestScreenState extends State<TestScreen>
       context.read<RequestBloc>().add(
             ChangeMethodRequestEvent(method: arg.method),
           );
+
+      context.read<RequestBloc>().add(ChangeHeadersRequestEvent(arg.headers));
     }
 
     context.read<RequestBloc>().add(
@@ -136,7 +150,7 @@ class _TestScreenState extends State<TestScreen>
     }
   }
 
-  void _onUrlChanged(Uri? value) {
+  void _onUrlChanged(BuildContext context, Uri? value) {
     context.read<RequestBloc>().add(
           ChangeUrlRequestEvent(value),
         );

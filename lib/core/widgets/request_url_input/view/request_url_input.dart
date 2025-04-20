@@ -60,7 +60,7 @@ class _RequestUrlInputState extends State<RequestUrlInput> {
             return TextFormField(
               controller: widget.controller,
               onChanged: (value) => bloc.add(ChangeUrlInputEvent(value)),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Введите URL или curl-запрос",
               ),
             );

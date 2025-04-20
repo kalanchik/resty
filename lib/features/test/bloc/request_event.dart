@@ -35,3 +35,57 @@ final class ChangeUrlRequestEvent extends RequestEvent {
   @override
   List<Object?> get props => [url];
 }
+
+final class ChangeHeadersRequestEvent extends RequestEvent {
+  const ChangeHeadersRequestEvent(this.headers);
+
+  final Map<String, String> headers;
+
+  @override
+  List<Object?> get props => [headers];
+}
+
+final class AddHeaderRequestEvent extends RequestEvent {
+  const AddHeaderRequestEvent({required this.header});
+
+  final MapEntry<String, String> header;
+
+  @override
+  List<Object?> get props => [header];
+}
+
+final class EditHeaderRequestEvent extends RequestEvent {
+  const EditHeaderRequestEvent({required this.header, required this.index});
+
+  final MapEntry<String, String> header;
+  final int index;
+
+  @override
+  List<Object?> get props => [header, index];
+}
+
+final class AddParamRequestEvent extends RequestEvent {
+  final MapEntry<String, String> param;
+
+  const AddParamRequestEvent({required this.param});
+
+  @override
+  List<Object?> get props => [param];
+}
+
+final class EditParamRequestEvent extends RequestEvent {
+  final MapEntry<String, String> param;
+  final int index;
+
+  const EditParamRequestEvent({required this.param, required this.index});
+
+  @override
+  List<Object?> get props => [param, index];
+}
+
+final class UpdateParamsRequestEvent extends RequestEvent {
+  const UpdateParamsRequestEvent();
+
+  @override
+  List<Object?> get props => [];
+}

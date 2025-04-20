@@ -16,7 +16,7 @@ class RequestInfoTabBar extends StatelessWidget {
       onTap: onPageChanged,
       controller: controller,
       indicatorSize: TabBarIndicatorSize.tab,
-      tabs: [
+      tabs: const [
         Tab(text: "PARAMS"),
         Tab(text: "HEADERS"),
         Tab(text: "DATA"),
