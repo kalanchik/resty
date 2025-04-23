@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:postmanovich/domain/entity/request/request_response.dart';
 import 'package:postmanovich/domain/entity/request_method/http_method.dart';
 import 'package:postmanovich/domain/use_case/request_use_case/request_use_case.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -28,7 +29,7 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
         paramsEntries: paramsEntries,
       ));
 
-      await useCase.sendRequest(
+      final response = await useCase.sendRequest(
         uri: uri!,
         data: data,
         method: method,
@@ -36,6 +37,7 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
       );
 
       emit(RequestComplete(
+        response: response,
         method: method,
         headersEnties: headersEntries,
         paramsEntries: paramsEntries,

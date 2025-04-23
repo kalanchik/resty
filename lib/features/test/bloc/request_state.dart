@@ -44,13 +44,17 @@ final class RequestLoading extends RequestState {
 
 final class RequestComplete extends RequestState {
   const RequestComplete({
+    required this.response,
     required super.method,
     required super.headersEnties,
     required super.paramsEntries,
   });
 
+  final RequestResponse response;
+
   @override
   List<Object?> get props => [
+        response,
         super.method,
         super.headersEnties,
         super.paramsEntries,

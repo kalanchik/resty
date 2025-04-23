@@ -20,12 +20,17 @@ class RequestInfoContent extends StatelessWidget {
       valueListenable: tabNotifier,
       builder: (context, value, _) {
         return switch (value) {
-          0 => const RequestParamsContent(),
-          1 => const RequestHeadersContent(),
+          0 => RequestParamsContent(key: ValueKey<int>(value)),
+          1 => RequestHeadersContent(
+              key: ValueKey<int>(value),
+            ),
           2 => JsonEditorContent(
+              key: ValueKey<int>(value),
               controller: jsonCtrl,
             ),
-          _ => const Placeholder(),
+          _ => Placeholder(
+              key: ValueKey<int>(value),
+            ),
         };
       },
     );

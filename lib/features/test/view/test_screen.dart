@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/core/widgets/json_text_area/text_editing_controller/json_text_editing_controller.dart';
 import 'package:postmanovich/core/widgets/request_url_input/view/request_url_input.dart';
 import 'package:postmanovich/domain/entity/curl/curl_request.dart';
+import 'package:postmanovich/domain/entity/request/request_response.dart';
 import 'package:postmanovich/domain/use_case/request_use_case/request_use_case.dart';
 import 'package:postmanovich/features/test/bloc/request_bloc.dart';
 import 'package:postmanovich/features/test/widget/method_dropdown.dart';
 import 'package:postmanovich/features/test/widget/request_info_content/request_info_content.dart';
 import 'package:postmanovich/features/test/widget/request_info_tab_bar.dart';
 import 'package:postmanovich/features/test/widget/request_listener.dart';
+import 'package:postmanovich/features/test/widget/request_response/request_response_content.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 class TestScreen extends StatefulWidget {
@@ -18,32 +20,45 @@ class TestScreen extends StatefulWidget {
   State<TestScreen> createState() => _TestScreenState();
 }
 
-class _TestScreenState extends State<TestScreen>
-    with SingleTickerProviderStateMixin {
+class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
+  // Контроллер для ввода url
   late final TextEditingController _urlInputCtrl;
+
+  // JSON DATA конткроллер
   late final JsonTextEditingController _controller;
+
+  // Request Tab контроллер
   late final TabController _tabController;
+
+  // Response Tab контроллер
+  late final TabController _responseTabController;
+
+  // Текущий индекс request вкладки
   late final ValueNotifier<int> _tabIndex;
+
+  // Response слушатель
+  late final ValueNotifier<RequestResponse?> _responseNotifier;
+
+  // Response Scroll контроллер
+  late final ScrollController _responseScrollCtrl;
+
+  // Response JSON контроллер
+  late final JsonTextEditingController _responseJsonController;
+
+  // Response Numbers Scroll контроллер
+  late final ScrollController _responseNumbersScrollCtrl;
+
+  late final ValueNotifier<int> _responseTabNotifier;
 
   @override
   void initState() {
-    _urlInputCtrl = TextEditingController();
-    _controller = JsonTextEditingController();
-    _tabController = TabController(
-      length: 3,
-      vsync: this,
-      initialIndex: 2,
-    );
-    _tabIndex = ValueNotifier(2);
+    _initDep();
     super.initState();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
-    _urlInputCtrl.dispose();
-    _tabIndex.dispose();
-    _controller.dispose();
+    _disposeDep();
     super.dispose();
   }
 
@@ -56,6 +71,7 @@ class _TestScreenState extends State<TestScreen>
       ),
       child: RequestListener(
         onUrlChanged: (value) => _urlInputCtrl.text = value,
+        onResponseChanged: (value) => _responseNotifier.value = value,
         child: Builder(
           builder: (context) {
             return Scaffold(
@@ -63,6 +79,7 @@ class _TestScreenState extends State<TestScreen>
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8.0,
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,19 +111,21 @@ class _TestScreenState extends State<TestScreen>
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     RequestInfoTabBar(
                       controller: _tabController,
                       onPageChanged: (value) => _tabIndex.value = value,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     RequestInfoContent(
                       jsonCtrl: _controller,
                       tabNotifier: _tabIndex,
+                    ),
+                    RequestResponseContent(
+                      tabController: _responseTabController,
+                      responseNotifier: _responseNotifier,
+                      responseScrollController: _responseScrollCtrl,
+                      responseCtrl: _responseJsonController,
+                      responseNumbersScrollCtrl: _responseNumbersScrollCtrl,
+                      responseTabNotifier: _responseTabNotifier,
                     ),
                   ],
                 ),
@@ -116,6 +135,50 @@ class _TestScreenState extends State<TestScreen>
         ),
       ),
     );
+  }
+
+  void _initDep() {
+    _urlInputCtrl = TextEditingController();
+    _controller = JsonTextEditingController();
+    _tabController = TabController(
+      length: 3,
+      vsync: this,
+      initialIndex: 2,
+    );
+    _responseTabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: 0,
+    )..addListener(
+        () => _responseTabNotifier.value = _responseTabController.index,
+      );
+    _tabIndex = ValueNotifier(2);
+    _responseNotifier = ValueNotifier(null)..addListener(_onResponseChanged);
+    _responseScrollCtrl = ScrollController()..addListener(_onRespScrollChanged);
+    _responseJsonController = JsonTextEditingController();
+    _responseNumbersScrollCtrl = ScrollController();
+    _responseTabNotifier = ValueNotifier(0);
+  }
+
+  void _disposeDep() {
+    _tabController.dispose();
+    _urlInputCtrl.dispose();
+    _tabIndex.dispose();
+    _controller.dispose();
+    _responseTabController.dispose();
+    _responseNotifier.dispose();
+    _responseScrollCtrl.dispose();
+    _responseJsonController.dispose();
+    _responseNumbersScrollCtrl.dispose();
+    _responseTabNotifier.dispose();
+  }
+
+  void _onResponseChanged() {
+    _responseJsonController.text = _responseNotifier.value?.data?.toRaw() ?? "";
+  }
+
+  void _onRespScrollChanged() {
+    _responseNumbersScrollCtrl.jumpTo(_responseScrollCtrl.offset);
   }
 
   void _onCurlInsert(BuildContext context) {
@@ -145,9 +208,7 @@ class _TestScreenState extends State<TestScreen>
           ChangeUrlRequestEvent(Uri.tryParse(arg.url)),
         );
 
-    if (arg.body != null) {
-      _controller.text = arg.body!.toView();
-    }
+    _controller.text = arg.body?.toView() ?? "";
   }
 
   void _onUrlChanged(BuildContext context, Uri? value) {

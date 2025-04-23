@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:postmanovich/core/widgets/column_numbers_builder/column_numbers_builder.dart';
 import 'package:postmanovich/core/widgets/json_text_area/text_editing_controller/json_text_editing_controller.dart';
 
 class JsonEditor extends StatefulWidget {
@@ -86,17 +87,9 @@ class _JsonEditorState extends State<JsonEditor> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 40,
-                  padding: const EdgeInsets.only(right: 8),
-                  child: SingleChildScrollView(
-                    controller: _numbersScrollController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: _buildLineNumbers(),
-                    ),
-                  ),
+                ColumnNumbersBuilder(
+                  controller: _numbersScrollController,
+                  count: widget.controller.text.split("\n").length,
                 ),
                 Expanded(
                   child: Stack(
@@ -141,21 +134,6 @@ class _JsonEditorState extends State<JsonEditor> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  List<Widget> _buildLineNumbers() {
-    final lineCount = widget.controller.text.split('\n').length;
-    return List<Widget>.generate(
-      lineCount,
-      (index) => Text(
-        '${index + 1}',
-        style: GoogleFonts.firaCode(
-          color: Colors.grey,
-          fontSize: 14,
-          height: 1.5,
-        ),
       ),
     );
   }
