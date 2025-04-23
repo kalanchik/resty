@@ -89,3 +89,8 @@ final class UpdateParamsRequestEvent extends RequestEvent {
   @override
   List<Object?> get props => [];
 }
+
+final class ExportRequestEvent extends RequestEvent {
+  @override
+  List<Object?> get props => [];
+}

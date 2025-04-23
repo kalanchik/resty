@@ -6,4 +6,6 @@ abstract class CurlBody extends Equatable {
   dynamic get data;
 
   String toView();
+
+  String toJsonString();
 }

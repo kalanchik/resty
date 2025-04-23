@@ -79,3 +79,41 @@ final class RequestChangeUrl extends RequestState {
         super.paramsEntries,
       ];
 }
+
+final class RequestExportError extends RequestState {
+  const RequestExportError({
+    required super.method,
+    required super.headersEnties,
+    required super.paramsEntries,
+    required this.error,
+  });
+
+  final String error;
+
+  @override
+  List<Object?> get props => [
+        error,
+        super.method,
+        super.headersEnties,
+        super.paramsEntries,
+      ];
+}
+
+final class RequestExportSuccess extends RequestState {
+  const RequestExportSuccess({
+    required super.method,
+    required super.headersEnties,
+    required super.paramsEntries,
+    required this.curlString,
+  });
+
+  final String curlString;
+
+  @override
+  List<Object?> get props => [
+        curlString,
+        super.method,
+        super.headersEnties,
+        super.paramsEntries,
+      ];
+}

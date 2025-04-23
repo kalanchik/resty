@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/domain/entity/request/request_response.dart';
 import 'package:postmanovich/domain/entity/response/response_status_code.dart';
@@ -39,6 +40,31 @@ class RequestListener extends StatelessWidget {
               },
               content: Text(
                 "Запрос выполнен: ${state.response.statusCode == null ? "" : "${state.response.statusCode!.statusCode} -> "} ${state.response.statusCode == null ? "" : state.response.statusCode!.statusName(context)}",
+              ),
+            ),
+          );
+        }
+
+        if (state is RequestExportError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(
+                "Ошибка экспорта: ${state.error}",
+              ),
+            ),
+          );
+          return;
+        }
+
+        if (state is RequestExportSuccess) {
+          Clipboard.setData(ClipboardData(text: state.curlString));
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.green,
+              content: Text(
+                "Запрос скопирован",
               ),
             ),
           );

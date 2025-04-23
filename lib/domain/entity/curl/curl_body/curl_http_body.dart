@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:postmanovich/domain/entity/curl/curl_body/curl_body.dart';
 import 'package:postmanovich/domain/entity/json/json_text_formatter/json_text_formatter.dart';
@@ -17,21 +18,11 @@ class CurlHttpBodyMap extends CurlHttpBody {
     const JsonTextFormatter formatter = JsonTextFormatterDefault();
 
     return formatter.prettyJson(data);
+  }
 
-    // final StringBuffer buffer = StringBuffer();
-
-    // buffer.write("{");
-
-    // for (var i = 0; i < data.length; i++) {
-    //   final entry = data.entries.elementAt(i);
-
-    //   buffer.write(
-    //       '"${entry.key}": ${entry.value}${i != data.length - 1 ? ',' : ''}');
-    // }
-
-    // buffer.write("}");
-
-    // return buffer.toString();
+  @override
+  String toJsonString() {
+    return jsonEncode(data);
   }
 
   @override
@@ -51,6 +42,11 @@ class CurlHttpBodyList extends CurlHttpBody {
   }
 
   @override
+  String toJsonString() {
+    return jsonEncode(data);
+  }
+
+  @override
   List<Object?> get props => [data];
 }
 
@@ -63,6 +59,11 @@ class CurlHttpBodyString extends CurlHttpBody {
   @override
   String toView() {
     log("STRING: ${data.toString()}");
+    return data;
+  }
+
+  @override
+  String toJsonString() {
     return data;
   }
 

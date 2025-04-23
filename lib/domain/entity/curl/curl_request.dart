@@ -56,7 +56,10 @@ class CurlHttpRequest extends Curl {
   Map<String, String> get headers => _headers;
 
   @override
-  List<Object?> get props => [_url, _method, _headers, _body, _queryParameters];
+  CurlBody? get body => _body;
+
+  @override
+  HttpMethod get method => _method;
 
   @override
   String toCurl() {
@@ -101,8 +104,5 @@ class CurlHttpRequest extends Curl {
   }
 
   @override
-  CurlBody? get body => _body;
-
-  @override
-  HttpMethod get method => _method;
+  List<Object?> get props => [_url, _method, _headers, _body, _queryParameters];
 }

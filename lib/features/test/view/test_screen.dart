@@ -83,6 +83,7 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      spacing: 8.0,
                       children: [
                         MethodDropdown(
                           bloc: context.read<RequestBloc>(),
@@ -102,12 +103,16 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(),
-                          onPressed: () {
-                            context
-                                .read<RequestBloc>()
-                                .add(StartRequestEvent());
-                          },
+                          onPressed: () => context.read<RequestBloc>().add(
+                                StartRequestEvent(),
+                              ),
                           child: const Text("SEND"),
+                        ),
+                        IconButton(
+                          onPressed: () => _exportToCurl(context),
+                          icon: const Icon(
+                            Icons.code,
+                          ),
                         ),
                       ],
                     ),
@@ -171,6 +176,12 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
     _responseJsonController.dispose();
     _responseNumbersScrollCtrl.dispose();
     _responseTabNotifier.dispose();
+  }
+
+  void _exportToCurl(BuildContext context) {
+    context.read<RequestBloc>().add(
+          ExportRequestEvent(),
+        );
   }
 
   void _onResponseChanged() {

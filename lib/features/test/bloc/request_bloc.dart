@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:postmanovich/domain/entity/curl/curl_body/curl_http_body.dart';
+import 'package:postmanovich/domain/entity/curl/curl_builder/curl_builder.dart';
+import 'package:postmanovich/domain/entity/curl/curl_request.dart';
 import 'package:postmanovich/domain/entity/request/request_response.dart';
 import 'package:postmanovich/domain/entity/request_method/http_method.dart';
 import 'package:postmanovich/domain/use_case/request_use_case/request_use_case.dart';
@@ -152,6 +155,49 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
         paramsEntries: paramsEntries,
       ));
     });
+    on<ExportRequestEvent>((event, emit) {
+      try {
+        if (uri == null) {
+          emit(RequestExportError(
+            method: method,
+            headersEnties: headersEntries,
+            paramsEntries: paramsEntries,
+            error: "URL not found",
+          ));
+          return;
+        }
+
+        CurlHttpBody? body;
+
+        if (data != null) {
+          body = CurlHttpBodyMap(data!);
+        }
+
+        final CurlHttpRequest curl = CurlHttpRequest(
+          url: uri.toString(),
+          method: method,
+          headers: headers,
+          body: body,
+          queryParameters: null,
+        );
+
+        final String curlString = curlBuilder.toCurl(curl);
+
+        emit(RequestExportSuccess(
+          curlString: curlString,
+          method: method,
+          headersEnties: headersEntries,
+          paramsEntries: paramsEntries,
+        ));
+      } catch (e) {
+        emit(RequestExportError(
+          method: method,
+          headersEnties: headersEntries,
+          paramsEntries: paramsEntries,
+          error: e.toString(),
+        ));
+      }
+    });
   }
 
   Map<String, String> get headers {
@@ -162,6 +208,7 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
     return result;
   }
 
+  static const CurlBuilder curlBuilder = CurlDefaultBuilder();
   Uri? uri;
   Map<String, dynamic>? data;
   List<MapEntry<String, String>> headersEntries = [];
