@@ -16,6 +16,7 @@ class _AppRootState extends State<AppRoot> {
       debugShowCheckedModeBanner: false,
       locale: Locale("ru"),
       supportedLocales: [Locale("ru")],
+      themeMode: ThemeMode.system,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

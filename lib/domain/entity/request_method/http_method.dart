@@ -1,7 +1,7 @@
 import 'package:postmanovich/config/constants/globals.dart';
 import 'package:postmanovich/domain/entity/request_method/request_method.dart';
 
-abstract class HttpMethod extends RequestMethod {
+sealed class HttpMethod extends RequestMethod {
   const HttpMethod();
 
   factory HttpMethod.fromString(String value) {

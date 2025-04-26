@@ -11,6 +11,9 @@ import 'package:postmanovich/features/test/widget/request_info_content/request_i
 import 'package:postmanovich/features/test/widget/request_info_tab_bar.dart';
 import 'package:postmanovich/features/test/widget/request_listener.dart';
 import 'package:postmanovich/features/test/widget/request_response/request_response_content.dart';
+import 'package:postmanovich/features/test/widget/tree_builder/bloc/collection_tree_bloc.dart';
+import 'package:postmanovich/features/test/widget/tree_builder/bloc/factory/collection_tree_bloc_factory.dart';
+import 'package:postmanovich/features/test/widget/tree_builder/workspace_tree_builder.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 class TestScreen extends StatefulWidget {
@@ -64,11 +67,18 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => RequestBloc(
-        context.read<RequestUseCase>(),
-        context.read<Talker>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => RequestBloc(
+            context.read<RequestUseCase>(),
+            context.read<Talker>(),
+          ),
+        ),
+        BlocProvider<CollectionTreeBloc>(
+          create: (context) => CollectionTreeBlocFactory.create(context),
+        ),
+      ],
       child: RequestListener(
         onUrlChanged: (value) => _urlInputCtrl.text = value,
         onResponseChanged: (value) => _responseNotifier.value = value,
@@ -76,61 +86,73 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
           builder: (context) {
             return Scaffold(
               body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 8.0,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 0,
+                ),
+                child: Row(
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      spacing: 8.0,
-                      children: [
-                        MethodDropdown(
-                          bloc: context.read<RequestBloc>(),
-                        ),
-                        Expanded(
-                          child: RequestUrlInput(
-                            width: double.infinity,
-                            height: 45,
-                            controller: _urlInputCtrl,
-                            onCurlInsert: _onCurlInsert,
-                            onCurlCreated: (arg, _) => _onCurlCreated(
-                              arg,
-                              context,
-                            ),
-                            onUrlChanged: (url) => _onUrlChanged(context, url),
-                          ),
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(),
-                          onPressed: () => context.read<RequestBloc>().add(
-                                StartRequestEvent(),
+                    const WorkspaceTreeBuilder(),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 8.0,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 8.0,
+                            children: [
+                              MethodDropdown(
+                                bloc: context.read<RequestBloc>(),
                               ),
-                          child: const Text("SEND"),
-                        ),
-                        IconButton(
-                          onPressed: () => _exportToCurl(context),
-                          icon: const Icon(
-                            Icons.code,
+                              Expanded(
+                                child: RequestUrlInput(
+                                  width: double.infinity,
+                                  height: 45,
+                                  controller: _urlInputCtrl,
+                                  onCurlInsert: _onCurlInsert,
+                                  onCurlCreated: (arg, _) => _onCurlCreated(
+                                    arg,
+                                    context,
+                                  ),
+                                  onUrlChanged: (url) =>
+                                      _onUrlChanged(context, url),
+                                ),
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(),
+                                onPressed: () =>
+                                    context.read<RequestBloc>().add(
+                                          StartRequestEvent(),
+                                        ),
+                                child: const Text("SEND"),
+                              ),
+                              IconButton(
+                                onPressed: () => _exportToCurl(context),
+                                icon: const Icon(
+                                  Icons.code,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    RequestInfoTabBar(
-                      controller: _tabController,
-                      onPageChanged: (value) => _tabIndex.value = value,
-                    ),
-                    RequestInfoContent(
-                      jsonCtrl: _controller,
-                      tabNotifier: _tabIndex,
-                    ),
-                    RequestResponseContent(
-                      tabController: _responseTabController,
-                      responseNotifier: _responseNotifier,
-                      responseScrollController: _responseScrollCtrl,
-                      responseCtrl: _responseJsonController,
-                      responseNumbersScrollCtrl: _responseNumbersScrollCtrl,
-                      responseTabNotifier: _responseTabNotifier,
+                          RequestInfoTabBar(
+                            controller: _tabController,
+                            onPageChanged: (value) => _tabIndex.value = value,
+                          ),
+                          RequestInfoContent(
+                            jsonCtrl: _controller,
+                            tabNotifier: _tabIndex,
+                          ),
+                          RequestResponseContent(
+                            tabController: _responseTabController,
+                            responseNotifier: _responseNotifier,
+                            responseScrollController: _responseScrollCtrl,
+                            responseCtrl: _responseJsonController,
+                            responseNumbersScrollCtrl:
+                                _responseNumbersScrollCtrl,
+                            responseTabNotifier: _responseTabNotifier,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
