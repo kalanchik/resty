@@ -104,4 +104,83 @@ class TreeUseCaseImpl implements TreeUseCase {
 
     return builder.rebuild(root) as Folder;
   }
+
+  @override
+  Future<Folder> dragEntity({
+    required Folder root,
+    required String entityId,
+    required String folderId,
+  }) async {
+    final path = _indexer.getPath(entityId);
+
+    if (path.isNotEmpty) {
+      path.removeLast();
+    }
+
+    CollectionEntity? result;
+
+    final builder = TreeRebuilder(
+      targetPath: path,
+      updateFn: (parrent) {
+        if (parrent is! Folder) {
+          throw Exception("Cannot update entity that is not folder");
+        }
+
+        result = parrent.getChild(entityId);
+
+        return parrent.removeChild(entityId);
+      },
+    );
+
+    final newRoot = builder.rebuild(root) as Folder;
+
+    if (result == null) {
+      throw Exception("Cannot find entity");
+    }
+
+    _indexer.reindex(newRoot);
+
+    final resultRoot = await addEntityToPath(
+      root: newRoot,
+      entity: result!,
+      folderId: folderId,
+    );
+
+    return resultRoot;
+  }
+
+  @override
+  Future<Folder> getEntity({
+    required Folder root,
+    required String entityId,
+  }) async {
+    final path = _indexer.getPath(entityId);
+
+    if (path.isNotEmpty) {
+      path.removeLast();
+    }
+
+    CollectionEntity? result;
+
+    final builder = TreeRebuilder(
+      targetPath: path,
+      updateFn: (parrent) {
+        if (parrent is! Folder) {
+          throw Exception("Cannot update entity that is not folder");
+        }
+
+        result = parrent.getChild(entityId);
+
+        return parrent;
+      },
+    );
+
+    builder.rebuild(root);
+
+    if (result == null) {
+      throw Exception("Cannot find entity");
+    }
+
+    return result as Folder;
+  }
 }

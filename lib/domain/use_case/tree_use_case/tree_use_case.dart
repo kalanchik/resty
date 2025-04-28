@@ -23,4 +23,15 @@ abstract class TreeUseCase {
     required String entityId,
     required String name,
   });
+
+  Future<Folder> dragEntity({
+    required Folder root,
+    required String entityId,
+    required String folderId,
+  });
+
+  Future<Folder> getEntity({
+    required Folder root,
+    required String entityId,
+  });
 }

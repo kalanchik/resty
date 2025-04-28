@@ -72,3 +72,19 @@ final class RenameEntityEvent extends CollectionTreeEvent {
   @override
   List<Object?> get props => [entityId, newName];
 }
+
+final class DragEntityEvent extends CollectionTreeEvent {
+  final String entityId;
+  final String folderId;
+
+  const DragEntityEvent({
+    required this.entityId,
+    required this.folderId,
+  });
+
+  @override
+  List<Object?> get props => [
+        entityId,
+        folderId,
+      ];
+}

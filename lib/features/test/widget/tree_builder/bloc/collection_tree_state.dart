@@ -19,3 +19,5 @@ final class CollectionTreeLoaded extends CollectionTreeState {
   @override
   List<Object?> get props => [root];
 }
+
+

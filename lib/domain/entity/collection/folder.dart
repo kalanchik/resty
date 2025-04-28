@@ -22,6 +22,10 @@ class Folder extends CollectionEntity {
     return copyWith(children: children.where((e) => e.id != childId).toList());
   }
 
+  CollectionEntity getChild(String childId) => children.firstWhere(
+        (e) => e.id == childId,
+      );
+
   Folder copyWith({
     String? id,
     String? name,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/config/constants/globals.dart';
@@ -85,6 +87,25 @@ class CollectionTreeBloc
       );
 
       add(BuildRootEvent(newRoot));
+    });
+    on<DragEntityEvent>((event, emit) async {
+      final currentState = state;
+
+      if (currentState is! CollectionTreeLoaded) return;
+
+      try {
+        final newRoot = await _treeUseCase.dragEntity(
+          root: currentState.root,
+          entityId: event.entityId,
+          folderId: event.folderId,
+        );
+
+        add(BuildRootEvent(newRoot));
+      } catch (e) {
+        log(e.toString());
+        add(BuildRootEvent(currentState.root));
+        return;
+      }
     });
     on<BuildRootEvent>((event, emit) async {
       emit(CollectionTreeInitial());
