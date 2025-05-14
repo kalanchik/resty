@@ -7,6 +7,7 @@ import 'package:postmanovich/domain/entity/request/request_response.dart';
 import 'package:postmanovich/domain/use_case/request_use_case/request_use_case.dart';
 import 'package:postmanovich/features/test/bloc/request_bloc.dart';
 import 'package:postmanovich/features/test/widget/method_dropdown.dart';
+import 'package:postmanovich/features/test/widget/project_menu/project_menu.dart';
 import 'package:postmanovich/features/test/widget/request_info_content/request_info_content.dart';
 import 'package:postmanovich/features/test/widget/request_info_tab_bar.dart';
 import 'package:postmanovich/features/test/widget/request_listener.dart';
@@ -91,6 +92,7 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                 ),
                 child: Row(
                   children: [
+                    const ProjectMenu(),
                     const WorkspaceTreeBuilder(),
                     Expanded(
                       child: Column(
