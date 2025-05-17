@@ -14,16 +14,18 @@ class AuthScreen extends StatelessWidget {
           WindowTitleBarBox(
             child: MoveWindow(),
           ),
-          Padding(
-            padding: EdgeInsets.all(
-              AppNumbers.of(context).spacings.x16,
-            ),
-            child: Row(
-              spacing: AppNumbers.of(context).spacings.x6,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                AuthForm(),
-              ],
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(
+                AppNumbers.of(context).spacings.x16,
+              ),
+              child: Row(
+                spacing: AppNumbers.of(context).spacings.x6,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  AuthForm(),
+                ],
+              ),
             ),
           ),
         ],

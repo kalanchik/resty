@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/core/inherited/app_numbers.dart';
 import 'package:postmanovich/core/widgets/app_logo_with_text/entity/app_logo_text_size.dart';
 import 'package:postmanovich/core/widgets/app_logo_with_text/view/app_logo_with_text.dart';
 import 'package:postmanovich/domain/entity/login/login_form_data.dart';
+import 'package:postmanovich/domain/use_case/user_use_case/user_use_case.dart';
+import 'package:postmanovich/features/auth/bloc/login_bloc.dart';
 import 'package:postmanovich/features/auth/widget/auth_form/widget/login_form/widget/login_actions.dart';
 import 'package:postmanovich/features/auth/widget/auth_form/widget/login_form/widget/login_inputs.dart';
 import 'package:postmanovich/features/auth/widget/auth_form/widget/login_form/widget/login_welcome_text.dart';
@@ -29,7 +32,7 @@ class _LoginFormState extends State<LoginForm> {
     _passCtrl = TextEditingController()..addListener(_passListener);
     _isRemMeNotifier = ValueNotifier(false)..addListener(_saveLoginListener);
     _showPassNotifier = ValueNotifier(true);
-    _emailFc = FocusNode()..requestFocus();
+    _emailFc = FocusNode();
     _passFc = FocusNode();
     _loginFormData = ValueNotifier(
       const LoginFormData(login: null, pass: null, isSaveLogin: false),
@@ -51,27 +54,30 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      spacing: AppNumbers.of(context).spacings.x8,
-      children: [
-        const AppLogoWithText(
-          size: AppLogoTextSize.xl,
-        ),
-        const LoginWelcomeText(),
-        LoginInputs(
-          emailCtrl: _emailCtrl,
-          passwordCtrl: _passCtrl,
-          isRememberMe: _isRemMeNotifier,
-          showPassNotifier: _showPassNotifier,
-          emailFc: _emailFc,
-          passFc: _passFc,
-        ),
-        LoginActions(
-          notifier: _loginFormData,
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => LoginBloc(context.read<UserUseCase>()),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: AppNumbers.of(context).spacings.x8,
+        children: [
+          const AppLogoWithText(
+            size: AppLogoTextSize.xl,
+          ),
+          const LoginWelcomeText(),
+          LoginInputs(
+            emailCtrl: _emailCtrl,
+            passwordCtrl: _passCtrl,
+            isRememberMe: _isRemMeNotifier,
+            showPassNotifier: _showPassNotifier,
+            emailFc: _emailFc,
+            passFc: _passFc,
+          ),
+          LoginActions(
+            notifier: _loginFormData,
+          ),
+        ],
+      ),
     );
   }
 

@@ -7,6 +7,8 @@ import 'package:postmanovich/domain/use_case/request_use_case/request_use_case.d
 import 'package:postmanovich/domain/use_case/request_use_case/request_use_case_impl.dart';
 import 'package:postmanovich/domain/use_case/tree_use_case/tree_use_case.dart';
 import 'package:postmanovich/domain/use_case/tree_use_case/tree_use_case_impl.dart';
+import 'package:postmanovich/domain/use_case/user_use_case/user_use_case.dart';
+import 'package:postmanovich/domain/use_case/user_use_case/user_use_case_factory.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 class UseCaseProvider extends StatelessWidget {
@@ -20,6 +22,7 @@ class UseCaseProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Dio dio = context.read<Dio>();
+    final Talker logger = context.read<Talker>();
 
     return MultiRepositoryProvider(
       providers: [
@@ -31,8 +34,11 @@ class UseCaseProvider extends StatelessWidget {
         RepositoryProvider<TreeUseCase>(
           create: (context) => TreeUseCaseImpl(
             indexer: context.read<CollectionPathIndexer>(),
-            logger: context.read<Talker>(),
+            logger: logger,
           ),
+        ),
+        RepositoryProvider<UserUseCase>(
+          create: (context) => UserUseCaseFactory.create(logger),
         ),
       ],
       child: child,
