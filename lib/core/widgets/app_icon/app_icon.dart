@@ -7,7 +7,7 @@ class AppIcon extends StatelessWidget {
     required this.icon,
     this.width = 16,
     this.height = 16,
-    this.colorFilter,
+    this.color,
     this.fit = BoxFit.cover,
   });
 
@@ -15,7 +15,7 @@ class AppIcon extends StatelessWidget {
   final double height;
   final String icon;
   final BoxFit fit;
-  final ColorFilter? colorFilter;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,12 @@ class AppIcon extends StatelessWidget {
       height: height,
       child: SvgPicture.asset(
         icon,
-        colorFilter: colorFilter,
+        colorFilter: color != null
+            ? ColorFilter.mode(
+                color!,
+                BlendMode.srcIn,
+              )
+            : null,
         fit: fit,
       ),
     );

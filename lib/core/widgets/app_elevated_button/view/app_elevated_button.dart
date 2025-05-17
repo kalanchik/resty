@@ -7,9 +7,11 @@ class AppElevatedButton extends StatelessWidget {
     super.key,
     this.style = const ElevatedButtonStyle(),
     this.icon,
+    required this.onTap,
     required this.child,
   });
 
+  final VoidCallback? onTap;
   final AppButtonStyle style;
   final Widget? icon;
   final Widget child;
@@ -18,7 +20,7 @@ class AppElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: style.style(context),
-      onPressed: () {},
+      onPressed: onTap,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: AppNumbers.of(context).spacings.x2,

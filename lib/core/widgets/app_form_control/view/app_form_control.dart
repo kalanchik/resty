@@ -19,6 +19,10 @@ class AppFormControl extends StatelessWidget {
     this.rightIcon,
     this.errorText,
     this.onLayer = false,
+    this.focusNode,
+    this.onEditingComplete,
+    this.autoFillHints,
+    this.isObscure = false,
   });
 
   // AppFormControl params
@@ -37,6 +41,10 @@ class AppFormControl extends StatelessWidget {
   final Widget? rightIcon;
   final String? errorText;
   final bool onLayer;
+  final FocusNode? focusNode;
+  final VoidCallback? onEditingComplete;
+  final List<String>? autoFillHints;
+  final bool isObscure;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +69,10 @@ class AppFormControl extends StatelessWidget {
           leftIcon: leftIcon,
           rightIcon: rightIcon,
           errorText: errorText,
+          autoFillHints: autoFillHints,
+          focusNode: focusNode,
+          onEditingComplete: onEditingComplete,
+          isObscure: isObscure,
         ),
         if (caption != null) ...{
           Text(
