@@ -1,16 +1,16 @@
 class BorderRadiusData {
   const BorderRadiusData();
 
-  int get micro => 2;
-  int get xs => 4;
-  int get xs2 => 6;
-  int get s => 8;
-  int get m => 12;
-  int get l => 16;
-  int get xl => 20;
-  int get xl2 => 24;
-  int get xl3 => 28;
-  int get xl4 => 32;
-  int get xl5 => 40;
-  int get full => 999;
+  double get micro => 2;
+  double get xs => 4;
+  double get xs2 => 6;
+  double get s => 8;
+  double get m => 12;
+  double get l => 16;
+  double get xl => 20;
+  double get xl2 => 24;
+  double get xl3 => 28;
+  double get xl4 => 32;
+  double get xl5 => 40;
+  double get full => 999;
 }
