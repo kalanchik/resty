@@ -8,4 +8,6 @@ abstract class UserRepository {
     required String email,
     required String password,
   });
+
+  Stream<dynamic> authStateChanges();
 }

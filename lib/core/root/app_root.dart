@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:postmanovich/core/inherited/app_colors.dart';
 import 'package:postmanovich/core/root/root_inherited.dart';
+import 'package:postmanovich/core/utils/user_listener/user_listener.dart';
 
 class AppRoot extends StatefulWidget {
   const AppRoot({super.key, required this.router});
@@ -32,7 +33,6 @@ class _AppRootState extends State<AppRoot> {
               scaffoldBackgroundColor: AppColors.of(context).bs.background,
               primaryColor: AppColors.of(context).bs.brand,
               textTheme: GoogleFonts.jetBrainsMonoTextTheme(),
-              brightness: Brightness.dark,
               visualDensity: VisualDensity.standard,
             ),
             localizationsDelegates: const [
@@ -40,6 +40,12 @@ class _AppRootState extends State<AppRoot> {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+            builder: (context, child) => child == null
+                ? const SizedBox.shrink()
+                : UserListener(
+                    router: widget.router,
+                    child: child,
+                  ),
           );
         },
       ),

@@ -16,4 +16,6 @@ abstract class UserUseCase {
     required String email,
     required String password,
   });
+
+  Stream<dynamic> authStateChanges();
 }

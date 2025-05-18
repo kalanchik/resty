@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:postmanovich/core/error/auth_error/auth_error.dart';
 import 'package:postmanovich/core/error/register_error/register_error.dart';
 import 'package:postmanovich/data/repository/user_repository_impl.dart';
@@ -65,4 +66,7 @@ class UserFirebaseUseCase implements UserUseCase {
       );
     }
   }
+
+  @override
+  Stream<User?> authStateChanges() => _repository.authStateChanges();
 }

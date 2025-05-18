@@ -50,4 +50,7 @@ class UserFirebaseRepository implements UserRepository {
       throw appError;
     }
   }
+
+  @override
+  Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
 }
