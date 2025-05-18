@@ -4,7 +4,7 @@ import 'package:postmanovich/core/use_case/use_case_response.dart';
 
 typedef LoginResp = UseCaseResp<bool, AuthError>;
 
-typedef RegisterResp = UseCaseResp<bool, RegisterError>;
+typedef RegisterResp = UseCaseResp<bool, RegisterException>;
 
 abstract class UserUseCase {
   Future<LoginResp> loginWithEmailAndPassword({

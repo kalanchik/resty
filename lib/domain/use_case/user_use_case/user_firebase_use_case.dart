@@ -55,7 +55,7 @@ class UserFirebaseUseCase implements UserUseCase {
     } catch (e) {
       _logger.error(e.toString());
 
-      if (e is RegisterError) {
+      if (e is RegisterException) {
         return (data: null, error: e);
       }
 

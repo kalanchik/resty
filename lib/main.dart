@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:postmanovich/core/di/core_di.dart';
 import 'package:postmanovich/core/root/app_root.dart';
 import 'package:postmanovich/features/auth/view/auth_screen.dart';
-import 'package:postmanovich/features/register/register_screen.dart';
+import 'package:postmanovich/features/register/view/register_screen.dart';
 import 'package:postmanovich/firebase_options.dart';
 
 void main() async {

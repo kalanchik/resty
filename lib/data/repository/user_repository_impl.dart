@@ -46,7 +46,7 @@ class UserFirebaseRepository implements UserRepository {
       return response;
     } on FirebaseAuthException catch (e) {
       _talker.error(e.toString());
-      final appError = RegisterError.fromFirebase(e.code);
+      final appError = RegisterException.fromFirebase(e.code);
       throw appError;
     }
   }

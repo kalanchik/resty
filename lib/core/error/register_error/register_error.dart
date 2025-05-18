@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:postmanovich/core/error/app_error.dart';
 
-abstract class RegisterError implements AppError {
-  factory RegisterError.fromFirebase(String code) {
+abstract class RegisterException implements AppError {
+  factory RegisterException.fromFirebase(String code) {
     switch (code) {
       case 'email-already-in-use':
         return EmailAlredeInUse();
@@ -20,42 +20,42 @@ abstract class RegisterError implements AppError {
   }
 }
 
-class EmailAlredeInUse implements RegisterError {
+class EmailAlredeInUse implements RegisterException {
   @override
   String viewMessage(BuildContext context) {
     return "Аккаунт с такой почтой уже существует";
   }
 }
 
-class InvalidEmail implements RegisterError {
+class InvalidEmail implements RegisterException {
   @override
   String viewMessage(BuildContext context) {
     return "Неверный формат почты";
   }
 }
 
-class WeakPassword implements RegisterError {
+class WeakPassword implements RegisterException {
   @override
   String viewMessage(BuildContext context) {
     return "Пароль слишком простой";
   }
 }
 
-class TooManyRequests implements RegisterError {
+class TooManyRequests implements RegisterException {
   @override
   String viewMessage(BuildContext context) {
     return "Слишком много попыток регистрации";
   }
 }
 
-class NetworkFailed implements RegisterError {
+class NetworkFailed implements RegisterException {
   @override
   String viewMessage(BuildContext context) {
     return "Отсутствует подключение к интернету";
   }
 }
 
-class UnknownRegisterError implements RegisterError {
+class UnknownRegisterError implements RegisterException {
   @override
   String viewMessage(BuildContext context) {
     return "Неизвестная ошибка при регистрации";

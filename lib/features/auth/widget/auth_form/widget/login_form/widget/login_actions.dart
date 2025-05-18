@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:postmanovich/core/inherited/app_assets.dart';
@@ -46,6 +47,7 @@ class LoginActions extends StatelessWidget {
                   return AppElevatedButton(
                     onTap: value.isFilled
                         ? () {
+                            TextInput.finishAutofillContext();
                             context.read<LoginBloc>().add(
                                   FetchLoginEvent(
                                       email: value.login!,

@@ -7,4 +7,14 @@ class AppAssetsData {
   final String eyeOpen = "${iconP}eye.svg";
   final String eyeClosed = "${iconP}eye-closed.svg";
   final String google = "${iconP}google.svg";
+  final String warnOutline = "${iconP}exclamation-circle-1.svg";
+  final String warnFilled = "${iconP}exclamation-circle.svg";
+  final String infoOutline = "${iconP}info-circle-1.svg";
+  final String infoFilled = "${iconP}info-circle.svg";
+  final String questionOutile = "${iconP}question-circle-1.svg";
+  final String questionFilled = "${iconP}question-circle.svg";
+  final String successOutline = "${iconP}tick-circle-1.svg";
+  final String successFilled = "${iconP}tick-circle.svg";
+  final String dangerOutline = "${iconP}x-circle-1.svg";
+  final String dangerFilled = "${iconP}x-circle.svg";
 }
