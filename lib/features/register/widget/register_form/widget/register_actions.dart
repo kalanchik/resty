@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:postmanovich/core/inherited/app_colors.dart';
 import 'package:postmanovich/core/inherited/app_numbers.dart';
 import 'package:postmanovich/core/inherited/app_text_style.dart';
+import 'package:postmanovich/core/toast/app_toast.dart';
+import 'package:postmanovich/core/toast/snack_bar_type.dart';
 import 'package:postmanovich/core/widgets/app_elevated_button/entity/app_button_size.dart';
 import 'package:postmanovich/core/widgets/app_elevated_button/entity/app_button_style.dart';
 import 'package:postmanovich/core/widgets/app_elevated_button/view/app_elevated_button.dart';
@@ -27,8 +29,27 @@ class RegisterActions extends StatelessWidget {
           valueListenable: notifier,
           builder: (context, value, _) => SizedBox(
             width: double.infinity,
-            child: BlocBuilder<RegisterBloc, RegisterState>(
+            child: BlocConsumer<RegisterBloc, RegisterState>(
               bloc: context.read<RegisterBloc>(),
+              listener: (context, state) {
+                if (state is RegisterError) {
+                  AppToast.show(
+                    context,
+                    title: "Ошибка",
+                    type: const SnackBarTypeDanger(isFilled: true),
+                    body: state.error.viewMessage(context),
+                  );
+                  return;
+                }
+                if (state is RegisterSuccess) {
+                  AppToast.show(
+                    context,
+                    title: "Успех",
+                    type: const SnackBarTypePositive(isFilled: true),
+                    body: "Аккаунт создан",
+                  );
+                }
+              },
               builder: (context, state) {
                 if (state is RegisterLoading) {
                   return const AppElevatedButton(
