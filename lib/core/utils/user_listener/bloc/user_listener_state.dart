@@ -10,8 +10,12 @@ final class UserListenerInitial extends UserListenerState {
 }
 
 final class UserSignInState extends UserListenerState {
+  final User user;
+
+  const UserSignInState(this.user);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [user];
 }
 
 final class UserSignOutState extends UserListenerState {

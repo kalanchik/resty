@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/core/error/register_error/register_error.dart';
 import 'package:postmanovich/domain/use_case/user_use_case/user_use_case.dart';
 
@@ -18,6 +18,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       final response = await useCase.registerWithEmailAndPassword(
         email: event.email,
         password: event.password,
+        username: event.username,
       );
 
       if (response.error != null) {

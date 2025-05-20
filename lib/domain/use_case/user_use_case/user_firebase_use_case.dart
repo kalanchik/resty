@@ -43,14 +43,21 @@ class UserFirebaseUseCase implements UserUseCase {
   Future<RegisterResp> registerWithEmailAndPassword({
     required String email,
     required String password,
+    required String username,
   }) async {
     try {
-      await _repository.registerWithEmailAndPassword(
+      final response = await _repository.registerWithEmailAndPassword(
         email: email,
         password: password,
       );
 
       _logger.info('Register success');
+
+      if (response.user == null) {
+        return (data: null, error: UnknownRegisterError());
+      }
+
+      await response.user!.updateDisplayName(username);
 
       return (data: true, error: null);
     } catch (e) {
@@ -69,4 +76,15 @@ class UserFirebaseUseCase implements UserUseCase {
 
   @override
   Stream<User?> authStateChanges() => _repository.authStateChanges();
+
+  @override
+  Future<SignOutResp> signOut() async {
+    try {
+      await _repository.signOut();
+
+      return (data: true, error: null);
+    } catch (e) {
+      return (data: true, error: null);
+    }
+  }
 }

@@ -10,4 +10,6 @@ abstract class UserRepository {
   });
 
   Stream<dynamic> authStateChanges();
+
+  Future<void> signOut();
 }

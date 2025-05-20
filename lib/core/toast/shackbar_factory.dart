@@ -23,7 +23,7 @@ class SnackBarFactory {
       behavior: SnackBarBehavior.floating,
       margin: EdgeInsets.only(
         bottom: 60,
-        left: (screenWidth - 300),
+        left: (screenWidth - 400),
         right: 30,
       ),
       elevation: 0,

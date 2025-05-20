@@ -17,4 +17,17 @@ class AppAssetsData {
   final String successFilled = "${iconP}tick-circle.svg";
   final String dangerOutline = "${iconP}x-circle-1.svg";
   final String dangerFilled = "${iconP}x-circle.svg";
+  final String apps = "${iconP}fi-rr-apps.svg";
+  final String book = "${iconP}fi-rr-book-alt.svg";
+  final String box = "${iconP}fi-rr-box.svg";
+  final String brush = "${iconP}fi-rr-brush.svg";
+  final String settings = "${iconP}fi-rr-settings.svg";
+  final String user = "${iconP}fi-rr-user.svg";
+  final String signOut = "${iconP}fi-rr-sign-out.svg";
+  final String code = "${iconP}code.svg";
+  final String folder = "${iconP}folder.svg";
+  final String menuDots = "${iconP}fi-rr-menu-dots.svg";
+  final String userAdd = "${iconP}fi-rr-user-add.svg";
+  final String copy = "${iconP}fi-rr-copy.svg";
+  final String trash = "${iconP}fi-rr-trash.svg";
 }

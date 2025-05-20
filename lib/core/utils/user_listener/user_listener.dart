@@ -26,6 +26,7 @@ class UserListener extends StatelessWidget {
           return;
         }
         if (state is UserSignOutState) {
+          router.go("/");
           log("USER SIGN OUT");
           return;
         }

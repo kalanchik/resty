@@ -19,35 +19,32 @@ class _AppRootState extends State<AppRoot> {
   @override
   Widget build(BuildContext context) {
     return RootInherited(
-      child: Builder(
-        builder: (context) {
-          return MaterialApp.router(
-            routerConfig: widget.router,
-            debugShowCheckedModeBanner: false,
-            locale: const Locale("ru"),
-            supportedLocales: const [
-              Locale("ru"),
-            ],
-            themeMode: ThemeMode.system,
-            theme: ThemeData(
-              scaffoldBackgroundColor: AppColors.of(context).bs.background,
-              primaryColor: AppColors.of(context).bs.brand,
-              textTheme: GoogleFonts.jetBrainsMonoTextTheme(),
-              visualDensity: VisualDensity.standard,
-            ),
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            builder: (context, child) => child == null
-                ? const SizedBox.shrink()
-                : UserListener(
-                    router: widget.router,
-                    child: child,
-                  ),
-          );
-        },
+      child: UserListener(
+        router: widget.router,
+        child: Builder(
+          builder: (context) {
+            return MaterialApp.router(
+              routerConfig: widget.router,
+              debugShowCheckedModeBanner: false,
+              locale: const Locale("ru"),
+              supportedLocales: const [
+                Locale("ru"),
+              ],
+              themeMode: ThemeMode.system,
+              theme: ThemeData(
+                scaffoldBackgroundColor: AppColors.of(context).bs.background,
+                primaryColor: AppColors.of(context).bs.brand,
+                textTheme: GoogleFonts.jetBrainsMonoTextTheme(),
+                visualDensity: VisualDensity.standard,
+              ),
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+            );
+          },
+        ),
       ),
     );
   }

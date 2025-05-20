@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 typedef ContextMenuBuilder = Widget Function(
-    BuildContext context, Offset offset);
+  BuildContext context,
+  Offset offset,
+);
 
 /// Shows and hides the context menu based on user gestures.
 ///
@@ -11,12 +14,15 @@ class ContextMenuRegion extends StatefulWidget {
   /// Creates an instance of [ContextMenuRegion].
   const ContextMenuRegion({
     super.key,
-    required this.child,
+    this.enableLeftClick = false,
     required this.contextMenuBuilder,
+    required this.child,
   });
 
   /// Builds the context menu.
   final ContextMenuBuilder contextMenuBuilder;
+
+  final bool enableLeftClick;
 
   /// The child widget that will be listened to for gestures.
   final Widget child;
@@ -40,6 +46,13 @@ class _ContextMenuRegionState extends State<ContextMenuRegion> {
       case TargetPlatform.linux:
       case TargetPlatform.windows:
         return false;
+    }
+  }
+
+  // Обработчик для левой кнопки мыши
+  void _onLeftClick(PointerDownEvent event) {
+    if (widget.enableLeftClick && event.buttons == kPrimaryMouseButton) {
+      _show(event.position);
     }
   }
 
@@ -96,13 +109,18 @@ class _ContextMenuRegionState extends State<ContextMenuRegion> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onSecondaryTapUp: _onSecondaryTapUp,
-      onTap: _onTap,
-      onLongPress: _longPressEnabled ? _onLongPress : null,
-      onLongPressStart: _longPressEnabled ? _onLongPressStart : null,
-      child: widget.child,
+    return Listener(
+      onPointerDown: _onLeftClick,
+      child: widget.enableLeftClick
+          ? widget.child
+          : GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onSecondaryTapUp: _onSecondaryTapUp,
+              onTap: _onTap,
+              onLongPress: _longPressEnabled ? _onLongPress : null,
+              onLongPressStart: _longPressEnabled ? _onLongPressStart : null,
+              child: widget.child,
+            ),
     );
   }
 }

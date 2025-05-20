@@ -5,14 +5,12 @@ class AppIcon extends StatelessWidget {
   const AppIcon({
     super.key,
     required this.icon,
-    this.width = 16,
-    this.height = 16,
+    this.size = 16,
     this.color,
     this.fit = BoxFit.cover,
   });
 
-  final double width;
-  final double height;
+  final double size;
   final String icon;
   final BoxFit fit;
   final Color? color;
@@ -20,8 +18,8 @@ class AppIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
-      height: height,
+      width: size,
+      height: size,
       child: SvgPicture.asset(
         icon,
         colorFilter: color != null

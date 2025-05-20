@@ -13,12 +13,16 @@ class UserListenerBloc extends Bloc<UserListenerEvent, UserListenerState> {
   UserListenerBloc(this.useCase) : super(UserListenerInitial()) {
     on<StartListeningUserEvent>((event, emit) {
       _subscription = useCase.authStateChanges().listen((user) {
-        if (user != null) {
-          emit(UserSignInState());
-        } else {
-          emit(UserSignOutState());
-        }
+        add(UpdateUserListenerEvent(user));
       }) as StreamSubscription<User?>;
+    });
+    on<UpdateUserListenerEvent>((event, emit) {
+      if (event.user != null) {
+        emit(UserSignInState(event.user!));
+        return;
+      }
+
+      emit(UserSignOutState());
     });
   }
 

@@ -53,4 +53,9 @@ class UserFirebaseRepository implements UserRepository {
 
   @override
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
+
+  @override
+  Future<void> signOut() async {
+    return await _firebaseAuth.signOut();
+  }
 }
