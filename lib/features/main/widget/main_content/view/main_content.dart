@@ -12,6 +12,7 @@ import 'package:postmanovich/core/widgets/context_menu/widget/context_menu_item/
 import 'package:postmanovich/core/widgets/project_item/view/project_item.dart';
 import 'package:postmanovich/features/main/widget/main_content/widget/main_content_tab_bar.dart';
 import 'package:postmanovich/features/main/widget/main_content/widget/main_header.dart';
+import 'package:postmanovich/features/project_create/view/project_create_modal.dart';
 
 class MainContent extends StatefulWidget {
   const MainContent({
@@ -71,7 +72,10 @@ class _MainContentState extends State<MainContent>
                   child: const Text("Импорт"),
                 ),
                 AppElevatedButton(
-                  onTap: () {},
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (_) => const ProjectCreateModal(),
+                  ),
                   style: const ElevatedButtonStyle(
                     size: AppButtonSizeS(),
                     type: AppButtonBrandType(),

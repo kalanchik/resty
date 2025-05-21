@@ -10,6 +10,14 @@ class Globals {
   static const httpMethodPatch = "PATCH";
   static const httpMethodDelete = "DELETE";
 
+  static const projectTypePublic = "public";
+  static const projectTypePrivate = "private";
+
+  static const projectStorageTypeCloud = "cloud";
+  static const projectStorageTypeLocal = "local";
+  static const projectStorageTypeGithub = "github";
+  static const projectStorageTypeGitlab = "gitlab";
+
   static const Folder testRoot = Folder(
     id: "main",
     name: "Main",

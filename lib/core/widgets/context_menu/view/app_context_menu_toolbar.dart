@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class AppContextMenuToolbar extends StatefulWidget {
   const AppContextMenuToolbar({
@@ -58,9 +59,7 @@ class _AppContextMenuToolbarState extends State<AppContextMenuToolbar> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedPositioned(
-      duration: const Duration(milliseconds: 100),
-      curve: Curves.easeInOut,
+    return Positioned(
       left: _adjustedOffset.dx,
       top: _adjustedOffset.dy,
       child: Material(
@@ -69,7 +68,15 @@ class _AppContextMenuToolbarState extends State<AppContextMenuToolbar> {
           opacity: _isInitialized ? 1.0 : 0.0,
           child: KeyedSubtree(
             key: _menuKey,
-            child: widget.child,
+            child: widget.child
+                .animate(
+                  autoPlay: true,
+                )
+                .scaleY(
+                  alignment: Alignment.topCenter,
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                ),
           ),
         ),
       ),

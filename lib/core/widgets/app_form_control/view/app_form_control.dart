@@ -23,6 +23,8 @@ class AppFormControl extends StatelessWidget {
     this.onEditingComplete,
     this.autoFillHints,
     this.isObscure = false,
+    this.minLines = 1,
+    this.maxLines = 1,
   });
 
   // AppFormControl params
@@ -45,6 +47,8 @@ class AppFormControl extends StatelessWidget {
   final VoidCallback? onEditingComplete;
   final List<String>? autoFillHints;
   final bool isObscure;
+  final int? minLines;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +77,8 @@ class AppFormControl extends StatelessWidget {
           focusNode: focusNode,
           onEditingComplete: onEditingComplete,
           isObscure: isObscure,
+          minLines: minLines,
+          maxLines: maxLines,
         ),
         if (caption != null) ...{
           Text(

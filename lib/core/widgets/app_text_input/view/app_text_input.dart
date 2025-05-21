@@ -18,8 +18,12 @@ class AppTextInput extends StatelessWidget {
     this.onEditingComplete,
     this.autoFillHints,
     this.isObscure = false,
+    this.maxLines = 1,
+    this.minLines = 1,
   });
 
+  final int? minLines;
+  final int? maxLines;
   final TextEditingController controller;
   final AppTextInputSize size;
   final String? hintText;
@@ -35,8 +39,8 @@ class AppTextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLines: 1,
-      minLines: 1,
+      maxLines: maxLines,
+      minLines: minLines,
       controller: controller,
       autofillHints: autoFillHints,
       onEditingComplete: onEditingComplete,

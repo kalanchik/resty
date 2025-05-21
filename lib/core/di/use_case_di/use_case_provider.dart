@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/data/repository/request_repository_impl.dart';
 import 'package:postmanovich/domain/entity/collection/collection_path_indexer/collection_path_indexer.dart';
+import 'package:postmanovich/domain/use_case/project_use_case/project_use_case.dart';
+import 'package:postmanovich/domain/use_case/project_use_case/project_use_case_factory.dart';
 import 'package:postmanovich/domain/use_case/request_use_case/request_use_case.dart';
 import 'package:postmanovich/domain/use_case/request_use_case/request_use_case_impl.dart';
 import 'package:postmanovich/domain/use_case/tree_use_case/tree_use_case.dart';
@@ -39,6 +41,9 @@ class UseCaseProvider extends StatelessWidget {
         ),
         RepositoryProvider<UserUseCase>(
           create: (context) => UserUseCaseFactory.create(logger),
+        ),
+        RepositoryProvider<ProjectUseCase>(
+          create: (context) => ProjectUseCaseFactory.create(context),
         ),
       ],
       child: child,
