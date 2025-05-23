@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/core/error/project_exc/project_exception.dart';
 import 'package:postmanovich/domain/entity/project/project_create_params.dart';

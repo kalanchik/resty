@@ -44,13 +44,17 @@ class ProjectCreateParams {
     );
   }
 
-  Map<String, dynamic> toFireStore(String id) {
+  Map<String, dynamic> toFireStore({
+    required String projectId,
+    required Map<String, dynamic> owner,
+  }) {
     final result = <String, dynamic>{
-      "id": id,
+      "id": projectId,
       "name": name,
       "type": type.value,
       "storage": storageType.value,
-      "createTime": Timestamp.now(),
+      "create_time": Timestamp.now(),
+      "users": [owner]
     };
 
     if (description != null) {

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 abstract class UserRepository {
   Future<dynamic> loginWithEmailAndPassword({
     required String email,
@@ -12,4 +14,6 @@ abstract class UserRepository {
   Stream<dynamic> authStateChanges();
 
   Future<void> signOut();
+
+  Future<User?> getCurrentUser();
 }

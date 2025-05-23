@@ -87,4 +87,9 @@ class UserFirebaseUseCase implements UserUseCase {
       return (data: true, error: null);
     }
   }
+
+  @override
+  Future<User?> getCurrentUser() async {
+    return await _repository.getCurrentUser();
+  }
 }

@@ -58,4 +58,9 @@ class UserFirebaseRepository implements UserRepository {
   Future<void> signOut() async {
     return await _firebaseAuth.signOut();
   }
+
+  @override
+  Future<User?> getCurrentUser() async {
+    return _firebaseAuth.currentUser;
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:postmanovich/core/error/app_error.dart';
 import 'package:postmanovich/core/error/auth_error/auth_error.dart';
 import 'package:postmanovich/core/error/register_error/register_error.dart';
@@ -24,4 +25,6 @@ abstract class UserUseCase {
   Stream<dynamic> authStateChanges();
 
   Future<SignOutResp> signOut();
+
+  Future<User?> getCurrentUser();
 }

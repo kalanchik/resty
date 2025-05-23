@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/data/repository/project_firebase_repository.dart';
 import 'package:postmanovich/domain/use_case/project_use_case/project_firestore_use_case.dart';
 import 'package:postmanovich/domain/use_case/project_use_case/project_use_case.dart';
+import 'package:postmanovich/domain/use_case/user_use_case/user_use_case.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 class ProjectUseCaseFactory {
@@ -15,6 +16,7 @@ class ProjectUseCaseFactory {
         FirebaseFirestore.instance,
         context.read<Talker>(),
       ),
+      context.read<UserUseCase>(),
     );
   }
 }
