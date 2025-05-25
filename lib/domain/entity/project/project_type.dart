@@ -8,6 +8,16 @@ sealed class ProjectType extends Equatable {
 
   String get value;
 
+  String name(BuildContext context);
+
+  factory ProjectType.fromString(String value) {
+    return switch (value) {
+      Globals.projectTypePublic => const ProjectTypePublic(),
+      Globals.projectTypePrivate => const ProjectTypePrivate(),
+      _ => const ProjectTypePublic(),
+    };
+  }
+
   factory ProjectType.fromTab(int index) {
     return switch (index) {
       0 => const ProjectTypePublic(),
@@ -25,6 +35,11 @@ class ProjectTypePublic extends ProjectType {
 
   @override
   List<Object?> get props => [value];
+
+  @override
+  String name(BuildContext context) {
+    return "Публичный";
+  }
 }
 
 class ProjectTypePrivate extends ProjectType {
@@ -35,4 +50,9 @@ class ProjectTypePrivate extends ProjectType {
 
   @override
   List<Object?> get props => [value];
+
+  @override
+  String name(BuildContext context) {
+    return "Приватный";
+  }
 }

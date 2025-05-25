@@ -20,6 +20,7 @@ class AppTextInput extends StatelessWidget {
     this.isObscure = false,
     this.maxLines = 1,
     this.minLines = 1,
+    this.onChanged,
   });
 
   final int? minLines;
@@ -35,6 +36,7 @@ class AppTextInput extends StatelessWidget {
   final VoidCallback? onEditingComplete;
   final List<String>? autoFillHints;
   final bool isObscure;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class AppTextInput extends StatelessWidget {
       autofillHints: autoFillHints,
       onEditingComplete: onEditingComplete,
       focusNode: focusNode,
+      onChanged: onChanged,
       style: AppTextStyle.of(context).textBody3.copyWith(
             color: AppColors.of(context).text.primary,
           ),

@@ -6,4 +6,16 @@ abstract interface class ProjectRepository {
     required ProjectCreateParams params,
     required ProjectUserDto user,
   });
+
+  Future<dynamic> myProjects({
+    required String userId,
+  });
+
+  Stream myProjectsStream({
+    required String userId,
+  });
+
+  Future<dynamic> deleteProject({
+    required String projectId,
+  });
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:postmanovich/core/inherited/app_assets.dart';
 import 'package:postmanovich/core/inherited/app_numbers.dart';
 import 'package:postmanovich/core/widgets/app_elevated_button/entity/app_button_size.dart';
@@ -6,10 +7,8 @@ import 'package:postmanovich/core/widgets/app_elevated_button/entity/app_button_
 import 'package:postmanovich/core/widgets/app_elevated_button/entity/app_button_type.dart';
 import 'package:postmanovich/core/widgets/app_elevated_button/view/app_elevated_button.dart';
 import 'package:postmanovich/core/widgets/app_icon/app_icon.dart';
-import 'package:postmanovich/core/widgets/context_menu/view/app_context_menu.dart';
-import 'package:postmanovich/core/widgets/context_menu/widget/context_menu_item/context_menu_item.dart';
-import 'package:postmanovich/core/widgets/context_menu/widget/context_menu_item/context_menu_item_type.dart';
 import 'package:postmanovich/core/widgets/project_item/view/project_item.dart';
+import 'package:postmanovich/features/main/blocs/my_projects/bloc/my_projects_bloc.dart';
 import 'package:postmanovich/features/main/widget/main_content/widget/main_content_tab_bar.dart';
 import 'package:postmanovich/features/main/widget/main_content/widget/main_header.dart';
 import 'package:postmanovich/features/project_create/view/project_create_modal.dart';
@@ -93,23 +92,35 @@ class _MainContentState extends State<MainContent>
           height: AppNumbers.of(context).spacings.x4,
         ),
         Expanded(
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Wrap(
-                spacing: AppNumbers.of(context).spacings.x2,
-                runSpacing: AppNumbers.of(context).spacings.x2,
-                children: [
-                  ProjectItem(onTap: () {}),
-                  ProjectItem(onTap: () {}),
-                  ProjectItem(onTap: () {}),
-                  ProjectItem(onTap: () {}),
-                  ProjectItem(onTap: () {}),
-                  ProjectItem(onTap: () {}),
-                  ProjectItem(onTap: () {}),
-                ],
-              ),
-            ],
+          child: BlocBuilder<MyProjectsBloc, MyProjectsState>(
+            bloc: context.read<MyProjectsBloc>(),
+            builder: (context, state) {
+              if (state is MyProjectLoaded) {
+                return ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Wrap(
+                      children: state.projects
+                          .map((e) => ProjectItem(
+                                onTap: () {},
+                                project: e,
+                              ))
+                          .toList(),
+                    )
+                  ],
+                );
+              }
+
+              if (state is MyProjectError) {
+                return const Center(
+                  child: Text("Ошибка при получении проектов"),
+                );
+              }
+
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           ),
         )
       ],

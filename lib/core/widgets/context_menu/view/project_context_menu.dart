@@ -34,6 +34,7 @@ class ProjectContextMenu extends StatelessWidget {
               ContextMenuItem(
                 onTap: () {
                   ContextMenuController.removeAny();
+                  onOpen();
                 },
                 text: "Открыть",
               ),
@@ -42,6 +43,7 @@ class ProjectContextMenu extends StatelessWidget {
                 iconPath: AppAssets.of(context).copy,
                 onTap: () {
                   ContextMenuController.removeAny();
+                  onCopy();
                 },
               ),
               ContextMenuItem(
@@ -49,6 +51,7 @@ class ProjectContextMenu extends StatelessWidget {
                 iconPath: AppAssets.of(context).userAdd,
                 onTap: () {
                   ContextMenuController.removeAny();
+                  onInviteCreate();
                 },
               ),
             ],
@@ -59,6 +62,7 @@ class ProjectContextMenu extends StatelessWidget {
                 type: ContextMenuItemTypeDanger(),
                 onTap: () {
                   ContextMenuController.removeAny();
+                  onDelete();
                 },
               ),
             ],

@@ -18,6 +18,8 @@ class Globals {
   static const projectStorageTypeGithub = "github";
   static const projectStorageTypeGitlab = "gitlab";
 
+  static const projectOwnerRoleId = 0;
+
   static const Folder testRoot = Folder(
     id: "main",
     name: "Main",

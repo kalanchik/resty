@@ -25,6 +25,7 @@ class AppFormControl extends StatelessWidget {
     this.isObscure = false,
     this.minLines = 1,
     this.maxLines = 1,
+    this.onChanged,
   });
 
   // AppFormControl params
@@ -49,6 +50,7 @@ class AppFormControl extends StatelessWidget {
   final bool isObscure;
   final int? minLines;
   final int? maxLines;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +81,7 @@ class AppFormControl extends StatelessWidget {
           isObscure: isObscure,
           minLines: minLines,
           maxLines: maxLines,
+          onChanged: onChanged,
         ),
         if (caption != null) ...{
           Text(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:postmanovich/core/inherited/app_assets.dart';
 import 'package:postmanovich/core/inherited/app_colors.dart';
 import 'package:postmanovich/core/inherited/app_numbers.dart';
@@ -7,14 +8,18 @@ import 'package:postmanovich/core/widgets/app_icon/app_icon.dart';
 import 'package:postmanovich/core/widgets/context_menu/view/project_context_menu.dart';
 import 'package:postmanovich/core/widgets/project_tags/entity/project_tag_type.dart';
 import 'package:postmanovich/core/widgets/project_tags/view/project_tags.dart';
+import 'package:postmanovich/domain/entity/project/project_info.dart';
+import 'package:postmanovich/features/delete_project_confirm/view/delete_project_modal.dart';
 
 class ProjectItem extends StatelessWidget {
   const ProjectItem({
     super.key,
+    required this.project,
     required this.onTap,
   });
 
   final VoidCallback onTap;
+  final ProjectInfo project;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +44,7 @@ class ProjectItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      "Project 2",
+                      project.name,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyle.of(context).textBody1.copyWith(
                             color: AppColors.of(context).text.primary,
@@ -47,10 +52,16 @@ class ProjectItem extends StatelessWidget {
                     ),
                   ),
                   ProjectContextMenu(
-                    onOpen: () {},
+                    onOpen: () => context.go("/project/${project.id}"),
                     onCopy: () {},
                     onInviteCreate: () {},
-                    onDelete: () {},
+                    onDelete: () => showDialog(
+                      context: context,
+                      builder: (_) => DeleteProjectModal(
+                        projectId: project.id,
+                        projectName: project.name,
+                      ),
+                    ),
                     child: MouseRegion(
                       cursor: SystemMouseCursors.click,
                       child: AppIcon(
@@ -67,7 +78,9 @@ class ProjectItem extends StatelessWidget {
               Flexible(
                 fit: FlexFit.tight,
                 child: Text(
-                  "Lobortis, varius elit faucibus porta varius tincidunt consectetur Donec enim. facilisis eget porta nec faucibus Praesent nulla, non dolor ex lacus, Nunc sit  asdadsa dasdasd dasdjasd ajndja sdasdnjasd anajd ",
+                  project.description.isEmpty
+                      ? "Добавьте описание к проекту"
+                      : project.description,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 4,
                   style: AppTextStyle.of(context).textBody3.copyWith(
@@ -78,19 +91,14 @@ class ProjectItem extends StatelessWidget {
               Wrap(
                 spacing: AppNumbers.of(context).spacings.x2,
                 runSpacing: AppNumbers.of(context).spacings.x1,
-                children: const [
-                  ProjectTags(text: "Process"),
+                children: [
                   ProjectTags(
-                    text: "Popular",
-                    type: ProjectTagBrandType(),
+                    text: "${project.users.length.toString()} участник",
+                    type: const ProjectTagInfoType(),
                   ),
                   ProjectTags(
-                    text: "Popular",
-                    type: ProjectTagPositiveType(),
-                  ),
-                  ProjectTags(
-                    text: "Popular",
-                    type: ProjectTagDangerType(),
+                    text: project.type.name(context),
+                    type: const ProjectTagWarnType(),
                   ),
                 ],
               )

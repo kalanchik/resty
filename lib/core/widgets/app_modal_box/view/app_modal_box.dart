@@ -14,7 +14,7 @@ class AppModalBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 400,
+        width: 450,
         child: Material(
           color: Colors.transparent,
           child: DecoratedBox(

@@ -6,6 +6,7 @@ import 'package:postmanovich/core/di/core_di.dart';
 import 'package:postmanovich/core/root/app_root.dart';
 import 'package:postmanovich/features/auth/view/auth_screen.dart';
 import 'package:postmanovich/features/main/view/main_screen.dart';
+import 'package:postmanovich/features/project/view/project_screen.dart';
 import 'package:postmanovich/features/register/view/register_screen.dart';
 import 'package:postmanovich/firebase_options.dart';
 
@@ -29,6 +30,12 @@ void main() async {
       GoRoute(
         path: "/main",
         builder: (context, state) => const MainScreen(),
+      ),
+      GoRoute(
+        path: "/project/:id",
+        builder: (context, state) => ProjectScreen(
+          projectId: state.pathParameters['id'] as String,
+        ),
       ),
     ],
   );

@@ -8,6 +8,16 @@ sealed class ProjectStorageType extends Equatable {
 
   String get value;
 
+  factory ProjectStorageType.fromString(String value) {
+    return switch (value) {
+      Globals.projectStorageTypeCloud => const ProjectStorageTypeCloud(),
+      Globals.projectStorageTypeLocal => const ProjectStorageTypeLocal(),
+      Globals.projectStorageTypeGithub => const ProjectStorageTypeGitHub(),
+      Globals.projectStorageTypeGitlab => const ProjectStorageTypeGitLab(),
+      _ => const ProjectStorageTypeCloud(),
+    };
+  }
+
   factory ProjectStorageType.fromTap(int index) {
     return switch (index) {
       1 => const ProjectStorageTypeCloud(),

@@ -17,6 +17,7 @@ class ProjectUseCaseFactory {
         context.read<Talker>(),
       ),
       context.read<UserUseCase>(),
+      context.read<Talker>(),
     );
   }
 }
