@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -21,13 +19,17 @@ class UserListener extends StatelessWidget {
       bloc: context.read<UserListenerBloc>()..add(StartListeningUserEvent()),
       listener: (context, state) {
         if (state is UserSignInState) {
-          router.go("/main");
-          log("USER SIGN IN");
+          final String? path = router.state.fullPath;
+
+          if (path == null || path == "/") {
+            router.go("/main");
+            return;
+          }
+
           return;
         }
         if (state is UserSignOutState) {
           router.go("/");
-          log("USER SIGN OUT");
           return;
         }
       },

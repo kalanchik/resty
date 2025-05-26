@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:postmanovich/core/inherited/app_colors.dart';
+import 'package:postmanovich/core/inherited/app_numbers.dart';
+import 'package:postmanovich/core/inherited/app_text_style.dart';
+import 'package:postmanovich/core/widgets/requet_tag/request_tag.dart';
 import 'package:postmanovich/domain/entity/collection/collection_entity.dart';
 import 'package:postmanovich/domain/entity/request_method/http_method.dart';
 
@@ -12,28 +16,40 @@ class CollectionRequest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      spacing: 6.0,
-      children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: switch (request.method) {
-              HttpMethodGet() => Colors.green,
-              HttpMethodPost() => Colors.amber,
-            },
-            borderRadius: const BorderRadius.all(
-              Radius.circular(4),
+    final contentPadding = EdgeInsets.symmetric(
+      horizontal: AppNumbers.of(context).spacings.x1,
+      vertical: AppNumbers.of(context).spacings.x1_5,
+    );
+
+    final brRadius = BorderRadius.all(
+      Radius.circular(AppNumbers.of(context).brRadius.xs2),
+    );
+
+    return InkWell(
+      onTap: () {},
+      hoverColor: AppColors.of(context).bs.hover,
+      borderRadius: brRadius,
+      splashFactory: NoSplash.splashFactory,
+      child: Padding(
+        padding: contentPadding,
+        child: Row(
+          spacing: AppNumbers.of(context).spacings.x2,
+          children: [
+            RequestTag(
+              type: switch (request.method) {
+                HttpMethodGet() => RequestTagType.tGet,
+                HttpMethodPost() => RequestTagType.post,
+              },
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(4),
-            child: Text(request.method.toCurl()),
-          ),
+            Text(
+              request.name,
+              style: AppTextStyle.of(context).textFootnote.copyWith(
+                    color: AppColors.of(context).text.primary,
+                  ),
+            ),
+          ],
         ),
-        Text(
-          request.name,
-        ),
-      ],
+      ),
     );
   }
 }

@@ -19,6 +19,7 @@ class FolderTreeBuilder extends StatelessWidget {
       ),
       child: ListView.separated(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: children.length,
         separatorBuilder: (context, index) => const SizedBox(
           height: 8,

@@ -91,7 +91,7 @@ class AppTextInput extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: 4,
-                    right: 8,
+                    right: 6,
                   ),
                   child: leftIcon,
                 ),
@@ -106,7 +106,7 @@ class AppTextInput extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: 4,
-                    right: 8,
+                    right: 6,
                   ),
                   child: rightIcon,
                 ),

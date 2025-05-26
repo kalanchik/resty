@@ -30,4 +30,14 @@ class AppAssetsData {
   final String userAdd = "${iconP}fi-rr-user-add.svg";
   final String copy = "${iconP}fi-rr-copy.svg";
   final String trash = "${iconP}fi-rr-trash.svg";
+  final String clock = "${iconP}fi-rr-clock.svg";
+  final String document = "${iconP}fi-rr-document-signed.svg";
+  final String settingsSlider = "${iconP}fi-rr-settings-sliders.svg";
+  final String folderMenu = "${iconP}fi-rr-folder.svg";
+  final String commentAlt = "${iconP}fi-rr-comment-alt.svg";
+  final String gitBranch = "${iconP}git-branch.svg";
+  final String request = "${iconP}request.svg";
+  final String test = "${iconP}fi-rr-test.svg";
+  final String model = "${iconP}box.svg";
+  final String arrowAngleDown = "${iconP}fi-rr-angle-down.svg";
 }
